@@ -1,0 +1,42 @@
+.sidenav {
+  height: calc(100% - 86px);
+}
+
+.content {
+  height: 100%;
+  padding: 86px 0;
+  margin-left: 20rem;
+}
+
+:host ::ng-deep {
+  a {
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    /* Additional styling attributes you want to reset */
+  }
+  p-card.deezer-card {
+    .p-card {
+      height: 100%;
+    }
+    .p-card-content {
+      display: none;
+    }
+    .p-card-title {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      font-size: 1.2rem;
+    }
+    .p-card-subtitle {
+      display: -webkit-box;
+      overflow: hidden;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2; /* Show ellipsis after 2 lines */
+    }
+  }
+  .shrink-to-content {
+    width:0.1%;
+    white-space: nowrap;
+  }
+}

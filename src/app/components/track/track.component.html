@@ -1,0 +1,15 @@
+<a [routerLink]="getTrackLink(track.id)" class="track-link">
+  <p-card
+    [header]="track.title"
+    [subheader]="track.artist.name"
+    class="deezer-card h-full"
+  >
+    <ng-template pTemplate="header">
+      <img
+        class="artist-thumbnail"
+        alt="Card"
+        [src]="track.album.cover_medium"
+      />
+    </ng-template>
+  </p-card>
+</a>

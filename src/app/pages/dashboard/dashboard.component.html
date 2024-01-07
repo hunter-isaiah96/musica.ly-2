@@ -1,0 +1,20 @@
+<div *ngIf="chart">
+  <h3>Tracks</h3>
+  <div class="grid">
+    <div class="col-2" *ngFor="let track of chart.tracks.data">
+      <deezer-track class="h-full" [track]="track"></deezer-track>
+    </div>
+  </div>
+  <h3>Albums</h3>
+  <div class="grid">
+    <div class="col-2" *ngFor="let album of chart.albums.data">
+      <deezer-album class="h-full" [album]="album"></deezer-album>
+    </div>
+  </div>
+  <h3>Artists</h3>
+  <div class="grid">
+    <div class="col-2" *ngFor="let artist of chart.artists.data">
+      <deezer-artist class="h-full w-full" [artist]="artist"></deezer-artist>
+    </div>
+  </div>
+</div>

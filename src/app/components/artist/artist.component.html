@@ -1,0 +1,9 @@
+<a [routerLink]="getArtistLink(artist.id)" class="artist-link">
+  <div class="text-center">
+    <img
+      class="border-circle w-full artist-thumbnail"
+      [src]="artist.picture_medium"
+    />
+    <h3 class="artist-name">{{ artist.name }}</h3>
+  </div>
+</a>

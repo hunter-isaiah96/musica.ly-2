@@ -1,0 +1,38 @@
+<div *ngIf="trackInfo">
+  <div class="grid align-items-center">
+    <div class="col col-3">
+      <img class="border-round w-full" [src]="trackInfo.album.cover_medium" />
+    </div>
+    <div class="col col-8">
+      <h1 class="text-6xl">{{ trackInfo.title }}</h1>
+      <div class="flex align-items-center">
+        <p-avatar
+          [image]="trackInfo.artist.picture_medium"
+          styleClass="mr-2"
+          shape="circle"
+        ></p-avatar>
+        <a
+          class="hover:underline"
+          [routerLink]="getArtistLink(trackInfo.artist.id)"
+        >
+          <p class="m-0">{{ trackInfo.artist.name }}</p>
+        </a>
+      </div>
+      <div>{{ trackInfo.duration | durationFormat }}</div>
+    </div>
+  </div>
+  <div class="flex align-items-center">
+    <p-button
+      [label]="trackToggleState() ? 'Pause' : 'Play'"
+      icon="pi pi-{{ trackToggleState() ? 'pause' : 'play' }}"
+      (onClick)="playTrack()"
+    ></p-button>
+    <h3 *ngIf="trackInfo.bpm" class="p-0 ml-4">BPM: {{ trackInfo.bpm }}</h3>
+  </div>
+  <h3>Contributors</h3>
+  <div class="grid">
+    <div class="col-2" *ngFor="let contributor of trackInfo.contributors">
+      <deezer-artist [artist]="contributor"></deezer-artist>
+    </div>
+  </div>
+</div>

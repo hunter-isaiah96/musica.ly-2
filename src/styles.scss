@@ -1,1 +1,27 @@
 /* You can add global styles to this file, and also import other style files */
+/* You can add global styles to this file, and also import other style files */
+@import "primeflex/primeflex.css";
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+html,
+body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.main-app {
+  display: block;
+  height: 100dvh;
+}
+
+.single-line-text {
+  /* Display only a single line */
+  white-space: nowrap;
+  /* Hide overflowing text */
+  overflow: hidden;
+  /* Add an ellipsis (...) when text overflows */
+  text-overflow: ellipsis;
+}

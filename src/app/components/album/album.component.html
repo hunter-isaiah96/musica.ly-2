@@ -1,0 +1,11 @@
+<a [routerLink]="getAlbumLink(album.id)" class="album-link">
+  <p-card
+    [header]="album.title"
+    [subheader]="album.artist!.name"
+    class="deezer-card h-full"
+  >
+    <ng-template pTemplate="header">
+      <img class="album-thumbnail" alt="Card" [src]="album.cover_medium" />
+    </ng-template>
+  </p-card>
+</a>

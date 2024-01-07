@@ -1,0 +1,60 @@
+<div>
+  <div class="grid align-items-center">
+    <div class="col col-3">
+      <img class="border-circle w-full" [src]="artist.picture_medium" />
+    </div>
+    <div class="col col-8">
+      <h1 class="text-6xl">{{ artist.name }}</h1>
+    </div>
+  </div>
+  <div class="grid">
+    <div class="col-9">
+      <h3>Top Tracks</h3>
+      <p-card styleClass="bg-purple-50">
+        <p-table
+          [value]="artistTopTracks.data"
+          [tableStyle]="{ 'min-width': '50rem' }"
+          styleClass="p-datatable-sm"
+        >
+          <ng-template pTemplate="body" let-track let-rowIndex="rowIndex">
+            <tr class="hover:bg-gray-200" style="background-color: transparent">
+              <td class="shrink-to-content">
+                <div>
+                  <img class="w-2rem" [src]="track.album.cover_small" />
+                </div>
+              </td>
+              <td>
+                <a
+                  class="hover:underline"
+                  [ngClass]="{
+                    'text-blue-400':
+                      player.currentSong && player.currentSong.id === track.id
+                  }"
+                  (click)="playTrack(track)"
+                >
+                  {{ rowIndex + 1 }}. {{ track.title }}
+                </a>
+              </td>
+              <td>{{ track.duration | durationFormat }}</td>
+            </tr>
+          </ng-template>
+        </p-table>
+      </p-card>
+    </div>
+    <div class="col-3">
+      <h3>Playlists</h3>
+      <ul class="m-0 p-0">
+        <li
+          class="flex align-items-center mb-2"
+          *ngFor="let playlist of artistPlaylists.data | slice : 0 : 5"
+        >
+          <img class="w-3rem border-round" [src]="playlist.picture_small" />
+          <div class="ml-2">
+            <a class="p-0 hover:underline">{{ playlist.title }}</a>
+            <!-- <p class="p-0 m-0">{{ playlist. }}</p> -->
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

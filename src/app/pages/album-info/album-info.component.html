@@ -1,0 +1,39 @@
+<div *ngIf="albumInfo">
+  <h2 class="album-title">
+    {{ albumInfo.title }}
+  </h2>
+  <p-table
+    [value]="albumInfo.tracks.data"
+    [tableStyle]="{ 'min-width': '50rem' }"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th></th>
+        <th>Track</th>
+        <th>Duration</th>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="body" let-track let-rowIndex="rowIndex">
+      <tr class="hover:bg-gray-200">
+        <td class="shrink-to-content">
+          <div>
+            <img [src]="track.album.cover_small" />
+          </div>
+        </td>
+        <td>
+          <a
+            class="hover:underline"
+            [ngClass]="{
+              'text-blue-400':
+                player.currentSong && player.currentSong.id === track.id
+            }"
+            (click)="playTrack(track)"
+          >
+            {{ rowIndex + 1 }}. {{ track.title }}
+          </a>
+        </td>
+        <td>{{ track.duration | durationFormat }}</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</div>
