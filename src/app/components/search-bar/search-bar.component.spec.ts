@@ -84,7 +84,7 @@ describe('SearchBarComponent', () => {
       expect(autocompleteItems.length).toBeGreaterThan(0);
     }));
 
-    it('render a list of artists', fakeAsync(() => {
+    it('renders a list of artists', fakeAsync(() => {
       autocompleteItems.forEach((item: HTMLElement, index: number) => {
         const { album, title, artist } = component.searchedTracks[index];
         const imgElement: HTMLImageElement = item.querySelector(

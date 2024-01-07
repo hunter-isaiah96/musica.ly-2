@@ -4,10 +4,11 @@ import { TrackComponent } from './track.component';
 import { RouterTestingModule } from '@angular/router/testing';
 import { TrackInfoComponent } from '../../pages/track-info/track-info.component';
 import { testTrack } from './testing-data';
+import { Router } from '@angular/router';
 describe('TrackComponent', () => {
   let component: TrackComponent;
   let fixture: ComponentFixture<TrackComponent>;
-
+  let router: Router;
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
@@ -21,6 +22,7 @@ describe('TrackComponent', () => {
     fixture = TestBed.createComponent(TrackComponent);
     component = fixture.componentInstance;
     component.track = testTrack;
+    router = TestBed.inject(Router);
     fixture.detectChanges();
   });
 
@@ -31,7 +33,7 @@ describe('TrackComponent', () => {
   });
 
   describe('Render Track Details', () => {
-    it('should renderthe tracks details', () => {
+    it('renders the tracks details', () => {
       const { track } = component;
       const trackTitle: HTMLElement =
         fixture.nativeElement.querySelector('.p-card-title');
@@ -40,11 +42,20 @@ describe('TrackComponent', () => {
       expect(trackTitle.textContent).toContain(track.title);
       expect(trackArtist.textContent).toContain(track.artist!.name);
     });
-    it('should render the tracks thumbnail', () => {
+
+    it('renders the tracks thumbnail', () => {
       const { track } = component;
       const artistThumbnail: HTMLImageElement =
         fixture.nativeElement.querySelector('.artist-thumbnail');
       expect(artistThumbnail.src).toContain(track.album.cover_medium);
+    });
+
+    it('goes to the track page when clicked', async () => {
+      const { track } = component;
+      const trackLink: HTMLAnchorElement =
+        fixture.nativeElement.querySelector('.track-link');
+      await trackLink.click();
+      expect(router.url).toContain(`/track/${track.id}`);
     });
   });
 });

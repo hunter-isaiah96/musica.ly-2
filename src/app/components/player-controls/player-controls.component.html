@@ -1,26 +1,31 @@
 <p-toolbar class="fixed bottom-0 w-full">
   <div class="p-toolbar-group-start flex-1">
-    <div class="flex align-items-center" *ngIf="player.currentSong">
+    <div
+      class="flex align-items-center current-song-details"
+      *ngIf="player.currentSong"
+    >
       <img
-        class="ml-2 w-3rem border-round"
+        class="ml-2 w-3rem border-round current-song-thumbnail"
         [src]="player.currentSong.album.cover_medium"
       />
       <div class="ml-2">
         <div class="flex">
           <a [routerLink]="['/track', player.currentSong.id]">
-            <h3 class="my-0 hover:underline">
+            <h3 class="my-0 hover:underline current-song-title">
               {{ player.currentSong.title }}
             </h3>
           </a>
           <p-tag
-            class="ml-2"
+            class="ml-2 current-song-explicit"
             severity="danger"
             value="Explicit"
             [rounded]="true"
             *ngIf="player.currentSong.explicit_lyrics"
           ></p-tag>
         </div>
-        <p class="my-0">{{ player.currentSong.artist.name }}</p>
+        <p class="my-0 current-song-artist">
+          {{ player.currentSong.artist.name }}
+        </p>
       </div>
     </div>
   </div>
@@ -33,7 +38,7 @@
       ></p-button>
       <p-button
         (click)="toggleAudio()"
-        class="player-control-button mx-2"
+        class="player-control-button mx-2 player-toggle-button"
         [icon]="player.isPlaying ? 'pi pi-pause' : 'pi pi-play'"
         [rounded]="true"
       ></p-button>
@@ -44,18 +49,18 @@
       ></p-button>
     </div>
     <div class="w-full flex align-items-center">
-      <span class="relative w-1">
+      <span class="relative w-1 current-song-playtime">
         {{ player.currentTime | durationFormat }}
       </span>
       <p-slider
-        class="flex-1 mx-4"
+        class="flex-1 mx-4 player-seek-bar"
         [step]="0.01"
         [max]="player.duration!"
         [(ngModel)]="player.currentTime"
         (mousedown)="onSeek()"
         (onSlideEnd)="onSeekEnd()"
       ></p-slider>
-      <span class="relative w-1">
+      <span class="relative w-1 current-song-duration">
         {{ player.duration | durationFormat }}
       </span>
     </div>

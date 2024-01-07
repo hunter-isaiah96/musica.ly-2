@@ -33,7 +33,7 @@ describe('AlbumComponent', () => {
   });
 
   describe('Rendering Album Details', () => {
-    it('should display the album details', () => {
+    it('renders the album details', () => {
       const { album } = component;
       const albumTitle: HTMLElement =
         fixture.nativeElement.querySelector('.p-card-title');
@@ -43,7 +43,7 @@ describe('AlbumComponent', () => {
       expect(albumArtist.textContent).toContain(album.artist!.name);
     });
 
-    it('should render the albums thumbnail', () => {
+    it('renders the albums thumbnail', () => {
       const { album } = component;
       const albumThumbnail: HTMLImageElement =
         fixture.nativeElement.querySelector('.album-thumbnail');
@@ -52,7 +52,7 @@ describe('AlbumComponent', () => {
   });
 
   describe('Navigation', () => {
-    it('should redirect you to the album route', async () => {
+    it('goes to the album page when clicked', async () => {
       const { album } = component;
       const albumLink: HTMLAnchorElement =
         fixture.nativeElement.querySelector('.album-link');
