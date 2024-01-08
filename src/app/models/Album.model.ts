@@ -10,7 +10,10 @@ export interface Album {
   cover_medium: string;
   cover_big: string;
   cover_xl: string;
+  explicit_lyrics?: boolean;
   md5_image: string;
+  record_type?: string;
+  position?: number;
   release_date?: string;
   tracklist: string;
   type: string;

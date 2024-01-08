@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { TrackComponent } from './track.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import { TrackInfoComponent } from '../../pages/track-info/track-info.component';
-import { testTrack } from './testing-data';
 import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { EmptyComponent } from '../empty-component/empty-component.component';
+import { testTrack } from './testing-data';
+import { TrackComponent } from './track.component';
 describe('TrackComponent', () => {
   let component: TrackComponent;
   let fixture: ComponentFixture<TrackComponent>;
@@ -14,7 +13,7 @@ describe('TrackComponent', () => {
       imports: [
         TrackComponent,
         RouterTestingModule.withRoutes([
-          { path: 'track/:id', component: TrackInfoComponent },
+          { path: 'track/:id', component: EmptyComponent },
         ]),
       ],
     }).compileComponents();

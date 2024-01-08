@@ -10,7 +10,10 @@
       />
       <div class="ml-2">
         <div class="flex">
-          <a [routerLink]="['/track', player.currentSong.id]">
+          <a
+            [routerLink]="['/track', player.currentSong.id]"
+            class="current-song-track-link"
+          >
             <h3 class="my-0 hover:underline current-song-title">
               {{ player.currentSong.title }}
             </h3>
@@ -23,9 +26,14 @@
             *ngIf="player.currentSong.explicit_lyrics"
           ></p-tag>
         </div>
-        <p class="my-0 current-song-artist">
-          {{ player.currentSong.artist.name }}
-        </p>
+        <a
+          [routerLink]="['/artist', player.currentSong.artist.id]"
+          class="current-song-artist-link"
+        >
+          <p class="my-0 current-song-artist">
+            {{ player.currentSong.artist.name }}
+          </p>
+        </a>
       </div>
     </div>
   </div>

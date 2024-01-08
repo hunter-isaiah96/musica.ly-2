@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Track } from '../../models/Track.model';
+import { Tracks } from '../../models/Track.model';
 import { Chart } from '../../models/Chart.model';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
@@ -9,21 +9,32 @@ import { ArtistTopTracks } from '../../models/ArtistTopTracks.model';
 import { Artist } from '../../models/Artist.model';
 import { Playlists } from '../../models/Playlist.model';
 
+interface DeezerAPIMethods {
+  getChart: () => Observable<any>;
+  getTracks: (search: string) => Observable<any>;
+  getTrack: (trackId: number) => Observable<any>;
+  getAlbum: (albumId: number) => Observable<any>;
+  getArtist: (artistId: number) => Observable<any>;
+  getArtistTopTracks: (artistId: number) => Observable<any>;
+  getArtistPlaylists: (artistId: number) => Observable<any>;
+}
+
 @Injectable({
   providedIn: 'root',
 })
-export class DeezerAPI {
+export class DeezerAPI implements DeezerAPIMethods {
   baseURL = 'https://api.deezer.com';
   constructor(private http: HttpClient) {}
 
-  async search(search: string): Promise<Track[]> {
-    const response = await fetch(`${this.baseURL}/search/track?q=${search}`);
-    const tracks = await response.json();
-    return tracks.data;
-  }
-
   getChart(): Observable<Chart> {
     const response = this.http.get<Chart>(`${this.baseURL}/chart`);
+    return response;
+  }
+
+  getTracks(search: string): Observable<Tracks> {
+    const response = this.http.get<Tracks>(
+      `${this.baseURL}/search/track?q=${search}`
+    );
     return response;
   }
 

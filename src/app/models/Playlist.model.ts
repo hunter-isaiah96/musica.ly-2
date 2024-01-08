@@ -1,8 +1,7 @@
 import { User } from './DeezerUser.model';
 export interface Playlists {
   data: Playlist[];
-  tota: number;
-  next: string;
+  total: number;
 }
 export interface Playlist {
   id: number;

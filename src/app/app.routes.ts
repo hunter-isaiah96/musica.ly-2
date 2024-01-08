@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { ScheduleComponent } from './pages/schedule/schedule.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { TrackInfoComponent } from './pages/track-info/track-info.component';
 import { AlbumInfoComponent } from './pages/album-info/album-info.component';

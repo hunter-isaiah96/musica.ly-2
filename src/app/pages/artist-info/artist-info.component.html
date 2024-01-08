@@ -1,5 +1,5 @@
 <div>
-  <div class="grid align-items-center">
+  <div *ngIf="artist" class="grid align-items-center">
     <div class="col col-3">
       <img class="border-circle w-full" [src]="artist.picture_medium" />
     </div>
@@ -8,7 +8,7 @@
     </div>
   </div>
   <div class="grid">
-    <div class="col-9">
+    <div *ngIf="artistTopTracks" class="col-9">
       <h3>Top Tracks</h3>
       <p-card styleClass="bg-purple-50">
         <p-table
@@ -41,7 +41,7 @@
         </p-table>
       </p-card>
     </div>
-    <div class="col-3">
+    <div *ngIf="artistPlaylists" class="col-3">
       <h3>Playlists</h3>
       <ul class="m-0 p-0">
         <li

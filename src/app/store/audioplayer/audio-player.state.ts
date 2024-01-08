@@ -96,7 +96,7 @@ export class AudioPlayerState {
 
   // Getters
   @Selector()
-  static getPlayer(state: AudioPlayerStateModel) {
+  static getPlayer(state: AudioPlayerStateModel): AudioPlayer {
     return state.player;
   }
 }

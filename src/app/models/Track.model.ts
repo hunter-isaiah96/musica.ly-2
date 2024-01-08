@@ -19,8 +19,11 @@ export interface Track {
   artist: Artist;
   album: Album;
   type: string;
+  isrc?: string;
 }
 
 export interface Tracks {
   data: Track[];
+  next?: string;
+  total?: number;
 }

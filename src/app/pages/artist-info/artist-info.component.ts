@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ArtistTopTracks } from '../../models/ArtistTopTracks.model';
 import { DeezerAPI } from '../../services/deezer/deezer.service';
 import { ActivatedRoute } from '@angular/router';
@@ -7,7 +7,7 @@ import { AvatarModule } from 'primeng/avatar';
 import { TableModule } from 'primeng/table';
 import { DurationFormat } from '../../pipes/duration/duration-format';
 import { AudioPlayer } from '../../models/AudioPlayer.model';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { AudioPlayerState } from '../../store/audioplayer/audio-player.state';
 import { Select } from '@ngxs/store';
 import { AudioPlayerService } from '../../services/audio-player/audio-player.service';
@@ -29,7 +29,8 @@ import { CardModule } from 'primeng/card';
   templateUrl: './artist-info.component.html',
   styleUrl: './artist-info.component.scss',
 })
-export class ArtistInfoComponent implements OnInit {
+export class ArtistInfoComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<void> = new Subject<void>();
   @Select(AudioPlayerState.getPlayer)
   player$!: Observable<AudioPlayer>;
   player!: AudioPlayer;
@@ -44,30 +45,46 @@ export class ArtistInfoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.player$.subscribe((audioPlayer) => (this.player = audioPlayer));
-    this.route.params.subscribe((params) => {
+    this.player$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((audioPlayer) => (this.player = audioPlayer));
+    this.route.params.pipe(takeUntil(this.unsubscribe$)).subscribe((params) => {
       this.loadArtist(params['id']);
       this.loadArtistTopTracks(params['id']);
       this.loadArtistPlaylists(params['id']);
     });
   }
 
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.unsubscribe();
+  }
+
   loadArtist(id: number) {
-    this.deezerApi.getArtist(id).subscribe((artist) => {
-      this.artist = artist;
-    });
+    this.deezerApi
+      .getArtist(id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((artist) => {
+        this.artist = artist;
+      });
   }
 
   loadArtistTopTracks(id: number) {
-    this.deezerApi.getArtistTopTracks(id).subscribe((artistTopTracks) => {
-      this.artistTopTracks = artistTopTracks;
-    });
+    this.deezerApi
+      .getArtistTopTracks(id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((artistTopTracks) => {
+        this.artistTopTracks = artistTopTracks;
+      });
   }
 
   loadArtistPlaylists(id: number) {
-    this.deezerApi.getArtistPlaylists(id).subscribe((artistPlaylists) => {
-      this.artistPlaylists = artistPlaylists;
-    });
+    this.deezerApi
+      .getArtistPlaylists(id)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((artistPlaylists) => {
+        this.artistPlaylists = artistPlaylists;
+      });
   }
 
   playTrack(track: Track) {

@@ -1,10 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
-import { ArtistComponent } from './artist.component';
-import { RouterTestingModule } from '@angular/router/testing';
-import { ArtistInfoComponent } from '../../pages/artist-info/artist-info.component';
-import { testArtist } from './testing-data';
 import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { EmptyComponent } from '../empty-component/empty-component.component';
+import { ArtistComponent } from './artist.component';
+import { testArtist } from './testing-data';
 
 describe('ArtistComponent', () => {
   let component: ArtistComponent;
@@ -16,7 +15,7 @@ describe('ArtistComponent', () => {
       imports: [
         ArtistComponent,
         RouterTestingModule.withRoutes([
-          { path: 'artist/:id', component: ArtistInfoComponent },
+          { path: 'artist/:id', component: EmptyComponent },
         ]),
       ],
     }).compileComponents();

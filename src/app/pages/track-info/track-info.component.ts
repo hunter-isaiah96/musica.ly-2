@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { DeezerAPI } from '../../services/deezer/deezer.service';
 import { TrackInfo } from '../../models/TrackInfo.model';
@@ -8,7 +8,7 @@ import { DurationFormat } from '../../pipes/duration/duration-format';
 import { ButtonModule } from 'primeng/button';
 import { ArtistComponent } from '../../components/artist/artist.component';
 import { AudioPlayerService } from '../../services/audio-player/audio-player.service';
-import { Observable } from 'rxjs';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { AudioPlayer } from '../../models/AudioPlayer.model';
 import { AudioPlayerState } from '../../store/audioplayer/audio-player.state';
 import { Select } from '@ngxs/store';
@@ -27,7 +27,9 @@ import { Select } from '@ngxs/store';
   templateUrl: './track-info.component.html',
   styleUrl: './track-info.component.scss',
 })
-export class TrackInfoComponent implements OnInit {
+export class TrackInfoComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<void> = new Subject<void>();
+
   @Select(AudioPlayerState.getPlayer)
   player$!: Observable<AudioPlayer>;
   player!: AudioPlayer;
@@ -39,10 +41,17 @@ export class TrackInfoComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.player$.subscribe((audioPlayer) => (this.player = audioPlayer));
-    this.route.params.subscribe((params) => {
+    this.player$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((audioPlayer) => (this.player = audioPlayer));
+    this.route.params.pipe(takeUntil(this.unsubscribe$)).subscribe((params) => {
       this.loadData(params['id']);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.unsubscribe();
   }
 
   getArtistLink(id: number) {
@@ -50,9 +59,12 @@ export class TrackInfoComponent implements OnInit {
   }
 
   loadData(trackId: number) {
-    this.deezerApi.getTrack(trackId).subscribe((trackInfo) => {
-      this.trackInfo = trackInfo;
-    });
+    this.deezerApi
+      .getTrack(trackId)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((trackInfo) => {
+        this.trackInfo = trackInfo;
+      });
   }
 
   trackToggleState(): boolean {

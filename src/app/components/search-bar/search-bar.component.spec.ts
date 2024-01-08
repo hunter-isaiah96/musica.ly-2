@@ -1,3 +1,6 @@
+import { provideHttpClient, withFetch } from '@angular/common/http';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { importProvidersFrom } from '@angular/core';
 import {
   ComponentFixture,
   TestBed,
@@ -5,19 +8,16 @@ import {
   flush,
   tick,
 } from '@angular/core/testing';
-
-import { SearchBarComponent } from './search-bar.component';
-import { DeezerAPI } from '../../services/deezer/deezer.service';
-import { HttpClientTestingModule } from '@angular/common/http/testing';
-import { provideHttpClient, withFetch } from '@angular/common/http';
-import { importProvidersFrom } from '@angular/core';
-import { NgxsModule } from '@ngxs/store';
-import { AudioPlayerState } from '../../store/audioplayer/audio-player.state';
-import { testSearchResults } from './testing-data';
 import { provideNoopAnimations } from '@angular/platform-browser/animations';
-import { TrackInfoComponent } from '../../pages/track-info/track-info.component';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { NgxsModule } from '@ngxs/store';
+import { DeezerAPI } from '../../services/deezer/deezer.service';
+import { AudioPlayerState } from '../../store/audioplayer/audio-player.state';
+import { EmptyComponent } from '../empty-component/empty-component.component';
+import { SearchBarComponent } from './search-bar.component';
+import { testSearchResults } from './testing-data';
+import { of } from 'rxjs';
 
 describe('SearchBarComponent', () => {
   let component: SearchBarComponent;
@@ -31,7 +31,7 @@ describe('SearchBarComponent', () => {
         HttpClientTestingModule,
         SearchBarComponent,
         RouterTestingModule.withRoutes([
-          { path: 'track/:id', component: TrackInfoComponent },
+          { path: 'track/:id', component: EmptyComponent },
         ]),
       ], // Mock HttpClient
       providers: [
@@ -61,8 +61,8 @@ describe('SearchBarComponent', () => {
     let searchSpy: jasmine.Spy;
 
     beforeEach(fakeAsync(() => {
-      searchSpy = spyOn(deezerApi, 'search').and.returnValue(
-        Promise.resolve(testSearchResults)
+      searchSpy = spyOn(deezerApi, 'getTracks').and.returnValue(
+        of(testSearchResults)
       );
       autoCompleteInput = fixture.nativeElement.querySelector(
         '.p-autocomplete-input'
@@ -80,7 +80,7 @@ describe('SearchBarComponent', () => {
 
     it('fetches search results on input', fakeAsync(() => {
       expect(searchSpy).toHaveBeenCalledWith(component.songSearch);
-      expect(component.searchedTracks).toEqual(testSearchResults);
+      expect(component.searchedTracks).toEqual(testSearchResults.data);
       expect(autocompleteItems.length).toBeGreaterThan(0);
     }));
 

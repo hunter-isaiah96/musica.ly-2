@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { ToolbarModule } from 'primeng/toolbar';
@@ -9,13 +9,11 @@ import {
 } from 'primeng/autocomplete';
 import { InputGroupModule } from 'primeng/inputgroup';
 import { InputGroupAddonModule } from 'primeng/inputgroupaddon';
-import { Select, Store } from '@ngxs/store';
-import { Observable } from 'rxjs';
+import { Select } from '@ngxs/store';
+import { Observable, Subject, takeUntil } from 'rxjs';
 import { Track } from '../../models/Track.model';
 import { AudioPlayer } from '../../models/AudioPlayer.model';
-import { AudioPlayerService } from '../../services/audio-player/audio-player.service';
 import { AudioPlayerState } from '../../store/audioplayer/audio-player.state';
-import { AudioPlayerActions } from '../../store/audioplayer/audio-player.action';
 import { DeezerAPI } from '../../services/deezer/deezer.service';
 import { Router } from '@angular/router';
 
@@ -33,7 +31,8 @@ import { Router } from '@angular/router';
   templateUrl: './search-bar.component.html',
   styleUrl: './search-bar.component.scss',
 })
-export class SearchBarComponent implements OnInit {
+export class SearchBarComponent implements OnInit, OnDestroy {
+  private unsubscribe$: Subject<void> = new Subject<void>();
   @Select(AudioPlayerState.getPlayer)
   player$!: Observable<AudioPlayer>;
   searchedTracks: Track[] = [];
@@ -43,7 +42,14 @@ export class SearchBarComponent implements OnInit {
   constructor(private deezerApi: DeezerAPI, private router: Router) {}
 
   ngOnInit(): void {
-    this.player$.subscribe((audioPlayer) => (this.player = audioPlayer));
+    this.player$
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((audioPlayer) => (this.player = audioPlayer));
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribe$.next();
+    this.unsubscribe$.complete();
   }
 
   async onItemSelect(event: AutoCompleteSelectEvent) {
@@ -51,6 +57,9 @@ export class SearchBarComponent implements OnInit {
   }
 
   async search(event: AutoCompleteCompleteEvent) {
-    this.searchedTracks = await this.deezerApi.search(event.query);
+    this.deezerApi
+      .getTracks(event.query)
+      .pipe(takeUntil(this.unsubscribe$))
+      .subscribe((trackResults) => (this.searchedTracks = trackResults.data));
   }
 }

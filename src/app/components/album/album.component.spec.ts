@@ -1,20 +1,21 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { AlbumComponent } from './album.component';
-import { AlbumInfoComponent } from '../../pages/album-info/album-info.component';
-import { testAlbum } from './testing-data';
-import { RouterTestingModule } from '@angular/router/testing';
 import { Router } from '@angular/router';
+import { RouterTestingModule } from '@angular/router/testing';
+import { EmptyComponent } from '../empty-component/empty-component.component';
+import { AlbumComponent } from './album.component';
+import { testAlbum } from './testing-data';
 
 describe('AlbumComponent', () => {
   let component: AlbumComponent;
   let fixture: ComponentFixture<AlbumComponent>;
   let router: Router;
+
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
         AlbumComponent,
         RouterTestingModule.withRoutes([
-          { path: 'album/:id', component: AlbumInfoComponent },
+          { path: 'album/:id', component: EmptyComponent },
         ]),
       ],
     }).compileComponents();
@@ -22,6 +23,7 @@ describe('AlbumComponent', () => {
     fixture = TestBed.createComponent(AlbumComponent);
     component = fixture.componentInstance;
     component.album = testAlbum;
+
     router = TestBed.inject(Router);
     fixture.detectChanges();
   });
