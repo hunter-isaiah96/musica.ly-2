@@ -74,28 +74,11 @@ describe('PlayerControlsComponent', () => {
       expect(currentSongDetails).toBeTruthy();
       const currentSongThumbnail: HTMLImageElement =
         currentSongDetails.querySelector('.current-song-thumbnail');
-      const currentSongTitle: HTMLHeadingElement =
-        currentSongDetails.querySelector('.current-song-title');
-      const currentSongArtist: HTMLParagraphElement =
-        currentSongDetails.querySelector('.current-song-artist');
-      expect(currentSongThumbnail.src).toContain(testTrack.album.cover_medium);
-      expect(currentSongTitle.textContent).toContain(testTrack.title);
-      expect(currentSongArtist.textContent).toContain(testTrack.artist.name);
-    });
-
-    it('loads and displays the currently loaded song', () => {
-      audioPlayer.load(testTrack);
-      fixture.detectChanges();
-      const currentSongDetails = fixture.nativeElement.querySelector(
-        '.current-song-details'
-      );
-      expect(currentSongDetails).toBeTruthy();
-      const currentSongThumbnail: HTMLImageElement =
-        currentSongDetails.querySelector('.current-song-thumbnail');
-      const currentSongTitle: HTMLHeadingElement =
-        currentSongDetails.querySelector('.current-song-title');
-      const currentSongArtist: HTMLParagraphElement =
-        currentSongDetails.querySelector('.current-song-artist');
+      const currentSongTitle: HTMLAnchorElement =
+        currentSongDetails.querySelector('.current-song-track-link');
+      const currentSongArtist: HTMLAnchorElement =
+        currentSongDetails.querySelector('.current-song-artist-link');
+      console.log(currentSongTitle.textContent);
       expect(currentSongThumbnail.src).toContain(testTrack.album.cover_medium);
       expect(currentSongTitle.textContent).toContain(testTrack.title);
       expect(currentSongArtist.textContent).toContain(testTrack.artist.name);

@@ -12,9 +12,9 @@
         <div class="flex">
           <a
             [routerLink]="['/track', player.currentSong.id]"
-            class="current-song-track-link"
+            class="current-song-track-link my-0 hover:underline"
           >
-            <h3 class="my-0 hover:underline current-song-title">
+            <h3 class="my-0">
               {{ player.currentSong.title }}
             </h3>
           </a>
@@ -28,9 +28,9 @@
         </div>
         <a
           [routerLink]="['/artist', player.currentSong.artist.id]"
-          class="current-song-artist-link"
+          class="current-song-artist-link hover:underline"
         >
-          <p class="my-0 current-song-artist">
+          <p class="my-0">
             {{ player.currentSong.artist.name }}
           </p>
         </a>
@@ -43,17 +43,20 @@
         class="player-control-button"
         icon="pi pi-step-backward"
         [rounded]="true"
+        [disabled]="true"
       ></p-button>
       <p-button
         (click)="toggleAudio()"
         class="player-control-button mx-2 player-toggle-button"
         [icon]="player.isPlaying ? 'pi pi-pause' : 'pi pi-play'"
         [rounded]="true"
+        [disabled]="!player.currentSong"
       ></p-button>
       <p-button
         class="player-control-button"
         icon="pi pi-step-forward"
         [rounded]="true"
+        [disabled]="true"
       ></p-button>
     </div>
     <div class="w-full flex align-items-center">
