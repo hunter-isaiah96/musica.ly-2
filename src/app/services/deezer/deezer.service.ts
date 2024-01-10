@@ -11,8 +11,8 @@ import { Playlists } from '../../models/Playlist.model';
 
 interface DeezerAPIMethods {
   getChart: () => Observable<any>;
-  getTracks: (search: string) => Observable<any>;
   getTrack: (trackId: number) => Observable<any>;
+  getTracks: (search: string) => Observable<any>;
   getAlbum: (albumId: number) => Observable<any>;
   getArtist: (artistId: number) => Observable<any>;
   getArtistTopTracks: (artistId: number) => Observable<any>;
@@ -31,17 +31,18 @@ export class DeezerAPI implements DeezerAPIMethods {
     return response;
   }
 
-  getTracks(search: string): Observable<Tracks> {
-    const response = this.http.get<Tracks>(
-      `${this.baseURL}/search/track?q=${search}`
-    );
-    return response;
-  }
-
   getTrack(trackId: number): Observable<TrackInfo> {
     const response = this.http.get<TrackInfo>(
       `${this.baseURL}/track/${trackId}`
     );
+    return response;
+  }
+
+  getTracks(search: string): Observable<Tracks> {
+    const response = this.http.get<Tracks>(
+      `${this.baseURL}/search/track?q=${search}`
+    );
+    // console.log('GETTING TRACKS');
     return response;
   }
 
