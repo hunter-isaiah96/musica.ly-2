@@ -21,7 +21,7 @@ describe('DeezerService', () => {
     });
   });
 
-  describe('DeezerAPI Test', () => {
+  describe('DeezerAPI', () => {
     apiCalls.forEach(({ testName, func, results, args }) => {
       it(testName, () => {
         spyOn(deezerApi, func).and.returnValue(of(results));
